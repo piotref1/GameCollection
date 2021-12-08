@@ -22,8 +22,8 @@ def test_parent(id, time_played_difference):
 
     import smtplib
     print(email)
-    gmail_user = 'pczajkowski8@gmail.com'
-    gmail_password = 'czajkowski'
+    gmail_user = 'pczaasdas'
+    gmail_password = 'sdsa'
 
     sent_from = gmail_user
     to = email[0]
