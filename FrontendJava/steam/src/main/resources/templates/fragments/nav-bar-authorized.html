@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" th:fragment="nav-bar">
+    <a class="navbar-brand" href="index.html" th:href="@{/}">Ciinema</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="collection.html" th:href="@{/collection}">Collection</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="hardware.html" th:href="@{/hardware}">Hardware</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="steamgames.html" th:href="@{/steamgames}">Games</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="suggestions.html" th:href="@{/suggestions}">Suggestions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="statisctics.html" th:href="@{/statistics}">Statistics</a>
+            </li>
+        </ul>
+        <div sec:authorize="hasAuthority('ROLE_USER')">
+            <a href="/user-account">Panel użytkownika</a>
+        </div>
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <a href="/admin-panel">Panel administratora</a>
+        </div>
+        <div sec:authorize="hasAuthority('ROLE_EMPLOYEE')">
+            <a href="/employee-panel">Panel pracownika</a>
+        </div>
+        <form action="register.html" th:action="@{/logout}" class="form-inline my-2 my-lg-0">
+            <button class="btn btn-danger m-2 my-2 my-sm-0 visibility" type="submit"
+                    value="register">Wyloguj</button>
+        </form>
+    </div>
+</nav>
+</body>
+</html>

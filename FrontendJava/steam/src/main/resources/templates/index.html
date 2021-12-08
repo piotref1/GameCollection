@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="UTF-8">
+	<link  rel="stylesheet" type="text/css" href="../css/styles.css" th:href="@{../css/styles.css}">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<title>Strona główna</title>
+</head>
+
+<body>
+
+<header>
+	<div sec:authorize="isAuthenticated()">
+		<div th:replace="~{fragments/nav-bar-authorized:: nav-bar}">Nav bar</div>
+	</div>
+	<div sec:authorize="isAnonymous()">
+		<div th:replace="~{fragments/nav-bar :: nav-bar}">Nav bar</div>
+	</div>
+</header>
+
+<section id="showcase" class="showcase">
+	<h1>Ciinema</h1>
+	<p>Witaj na stronie kina Ciinema! Zapoznaj się z ofertą naszego kina.</p>
+	<a href="about" class="btn btn-info">Przeczytaj więcej</a>
+</section>
+
+<section id="news">
+	<div class="row my-3">
+		<div class="col-sm-3 d-flex">
+			<div class="card bg-info">
+				<div class="card-body">
+					<h5 class="card-title">Niższe ceny!</h5>
+					<p class="card-text">KINOWE EMOCJE W NIŻSZEJ CENIE | Bilety już od 14,90 zł</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3 d-flex">
+			<div class="card bg-info">
+				<div class="card-body">
+					<h5 class="card-title">Mniej widowni!</h5>
+					<p class="card-text">Zmniejszenie liczby widowni do 25% w Kinie w Kielcach</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3 d-flex">
+			<div class="card bg-info">
+				<div class="card-body">
+					<h5 class="card-title">Nowe wytyczne!</h5>
+					<p class="card-text">Przypominamy, że zgodnie z rządowymi wytycznymi widzowie na terenie kina powinni mieć
+						zakryte usta i nos.</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3 d-flex">
+			<div class="card bg-info">
+				<div class="card-body">
+					<h5 class="card-title">Uwaga!</h5>
+					<p class="card-text">Nasze kina wyposażyliśmy w specjalne oznakowania graficzne ułatwiające zachowanie
+						dystansu między klientami w kolejkach</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="main-content" class="card text-center bg-light">
+
+	<div class="card-header">
+		<h2>Najbliższe premiery</h2>
+	</div>
+
+	<div class="card-body">
+
+		<div class="row">
+
+			<div class="col-sm images">
+				<img th:src="@{../img/joker.jpg}" alt="joker" class="image img-responsive">
+				<div class="middle">
+					<div class="bg-dark text-white lead p-3">
+						OPIS FILMU<br>
+						Strudzony życiem komik popada w obłęd i staje się psychopatycznym mordercą.
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm images">
+				<img th:src="@{../img/kingkong.jpg}" alt="kingkong" class="image img-responsive">
+				<div class="middle">
+					<div class="bg-dark text-white lead p-3">
+						OPIS FILMU<br>
+						Kiedy grupa odkrywców trafia na wyspę zamieszkałą przez mitycznego Konga, ich misja
+						badawcza zamienia się w walkę o przetrwanie.
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm images">
+				<img th:src="@{../img/whiplash.jpg}" alt="whiplash" class="image img-responsive">
+				<div class="middle">
+					<div class="bg-dark text-white lead p-3">
+						OPIS FILMU<br>
+						Młody i ambitny perkusista za wszelką cenę pragnie dołączyć do czołówki najwybitniejszych
+						artystów muzyki jazzowej.
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm images">
+				<img th:src="@{../img/gladiator.jpg}" alt="gladiator" class="image img-responsive">
+				<div class="middle">
+					<div class="bg-dark text-white lead p-3">
+						OPIS FILMU<br>
+						Generał Maximus - prawa ręka cesarza, szczęśliwy mąż i ojciec - w jednej chwili traci
+						wszystko. Jako niewolnik-gladiator musi walczyć na arenie o przeżycie.
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<footer class="text-center text-lg-start bg-dark text-white p-3">
+	CIINEMA &copy; 2021
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Panel administratora</title>
+</head>
+
+<body>
+
+<header>
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{fragments/nav-bar-authorized:: nav-bar}">Nav bar</div>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <div th:replace="~{fragments/nav-bar :: nav-bar}">Nav bar</div>
+    </div>
+</header>
+
+<section id="main-content">
+
+    <div class="card bg-light mt-5">
+
+
+        <div class="card bg-light">
+            <div class="card-body w-50 mx-auto">
+                <h5 class="card-title text-center">Games to buy</h5>
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Has Achievements?</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="toBuySuggestion: ${toBuySuggestions}">
+                        <!--<a th:href="@{'https://store.steampowered.com/app/' + ${toBuySuggestion[0]}}">
+                            <td th:text="${toBuySuggestion[2]}"/></a>-->
+                        <td><a th:href="@{'https://store.steampowered.com/app/' + ${toBuySuggestion[0]}}" th:text="${toBuySuggestion[2]}"></a></td>
+                        <td th:text="${toBuySuggestion[5]}"/>
+                        <td th:text="${toBuySuggestion[3]}"/>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5 class="card-title text-center">Games to finish</h5>
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Achievement Completion</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="toFinishSuggestion: ${toFinishSuggestions}">
+                        <td><a th:href="@{'https://store.steampowered.com/app/' + ${toFinishSuggestion[0]}}" th:text="${toFinishSuggestion[2]}"></a></td>
+                        <td th:text="${toFinishSuggestion[5]}"/>
+                        <td th:text="${toFinishSuggestion[4]}"/>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5 class="card-title text-center">Games to play</h5>
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Achievement Completion</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="toPlaySuggestion: ${toPlaySuggestions}">
+                        <td><a th:href="@{'https://store.steampowered.com/app/' + ${toPlaySuggestion[0]}}" th:text="${toPlaySuggestion[2]}"></a></td>
+                        <td th:text="${toPlaySuggestion[5]}"/>
+                        <td th:text="${toPlaySuggestion[4]}"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<footer class="text-center text-lg-start bg-dark text-white p-3">
+    CIINEMA &copy; 2021
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

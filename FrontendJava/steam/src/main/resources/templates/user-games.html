@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Panel administratora</title>
+</head>
+
+<body>
+
+<header>
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{fragments/nav-bar-authorized:: nav-bar}">Nav bar</div>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <div th:replace="~{fragments/nav-bar :: nav-bar}">Nav bar</div>
+    </div>
+</header>
+
+<section id="main-content">
+
+    <div class="card bg-light mt-5">
+        <div class="card-body w-50 mx-auto">
+            <h5 class="card-title text-center">Dodawanie seansu</h5>
+            <form method="post" action="#" th:action="@{/createScreening}" th:object="${newScreening}">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="movie">Wybierz film</label>
+                        <select class="form-control" aria-label="Wybierz film" id="movie" th:field="*{movie.id}">
+                            <option th:each="movie : ${movies}" th:text="${movie.title}" th:value="${movie.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="movie">Sala</label>
+                        <select class="form-control" aria-label="Wybierz film" id="movie" th:field="*{auditorium.id}">
+                            <option th:each="auditorium : ${auditoriums}" th:text="${auditorium.name}" th:value="${auditorium.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Data</label>
+                        <input class="form-control" type="date" value="2021-01-01" id="date" th:field="*{screeningDate}"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Czas</label>
+                        <input class="form-control" type="time" id="time" th:field="*{screeningTime}" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Dodaj</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body w-50 mx-auto">
+                <h5 class="card-title text-center">Dostępne seanse</h5>
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nazwa seansu</th>
+                        <th scope="col">Sala</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Godzina</th>
+                        <th scope="col">Usuń seans</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="screening: ${screenings}">
+                        <td th:text="${screening.movie.title}"/>
+                        <td th:text="${screening.auditorium.name}"/>
+                        <td th:text="${screening.screeningDate}"/>
+                        <td th:text="${screening.screeningTime}"/>
+                        <td>
+                            <form method="post" action="#" th:action="@{/deleteScreening}">
+                                <!--th:action="@{'/cos/{id}'(id=${screening.id})}" th:method="delete czy cos"-->
+                                <input type="hidden" th:value="${screening.id}" name="screeningId"/>
+                                <button class="btn btn-danger m-2 my-2 my-sm-0 visibility" type="submit">Usuń</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<footer class="text-center text-lg-start bg-dark text-white p-3">
+    CIINEMA &copy; 2021
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

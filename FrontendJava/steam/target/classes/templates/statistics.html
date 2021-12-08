@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Statistics</title>
+    <!-- Source of script https://www.wimdeblauwe.com/blog/2021/01/05/using-google-charts-with-thymeleaf/-->
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Genre');
+            data.addColumn('number', 'Amount');
+
+            data.addRows([
+                /*[# th:each="row : ${statistics}"]*/
+                [[${row}]],
+                /*[/]*/
+            ]);
+
+            // Set chart options
+            var options = {'title':'Breakdown of genres based on games you own',
+                'width':400,
+                'height':300};
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+
+</head>
+
+<body>
+
+<header>
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{fragments/nav-bar-authorized:: nav-bar}">Nav bar</div>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <div th:replace="~{fragments/nav-bar :: nav-bar}">Nav bar</div>
+    </div>
+</header>
+
+<section id="main-content">
+
+    <div class="card bg-light mt-5">
+
+
+        <div class="card bg-light">
+            <div class="card-body w-50 mx-auto">
+
+                <h5>Pie graph showing genres of games owned</h5>
+                <div id="chart_div"></div>
+
+
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Amount</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="statistic: ${statistics}">
+                        <td th:text="${statistic[0]}"/>
+                        <td th:text="${statistic[1]}"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<footer class="text-center text-lg-start bg-dark text-white p-3">
+    CIINEMA &copy; 2021
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <link  rel="stylesheet" type="text/css" href="../css/styles.css" th:href="@{../css/styles.css}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Rezerwacje użytkownika</title>
+</head>
+
+<body>
+
+<header>
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{fragments/nav-bar-authorized:: nav-bar}">Nav bar</div>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <div th:replace="~{fragments/nav-bar :: nav-bar}">Nav bar</div>
+    </div>
+</header>
+
+<section id="showcase" class="showcase">
+    <h1>Ciinema</h1>
+    <p>Witaj na stronie kina Ciinema! Zapoznaj się z ofertą naszego kina.</p>
+    <a href="about" class="btn btn-info">Przeczytaj więcej</a>
+</section>
+
+<section id="news">
+    <div class="row my-3">
+        <div class="col-sm-3 d-flex">
+            <div class="card bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Niższe ceny!</h5>
+                    <p class="card-text">KINOWE EMOCJE W NIŻSZEJ CENIE | Bilety już od 14,90 zł</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 d-flex">
+            <div class="card bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Mniej widowni!</h5>
+                    <p class="card-text">Zmniejszenie liczby widowni do 25% w Kinie w Kielcach</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 d-flex">
+            <div class="card bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Nowe wytyczne!</h5>
+                    <p class="card-text">Przypominamy, że zgodnie z rządowymi wytycznymi widzowie na terenie kina powinni mieć
+                        zakryte usta i nos.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 d-flex">
+            <div class="card bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Uwaga!</h5>
+                    <p class="card-text">Nasze kina wyposażyliśmy w specjalne oznakowania graficzne ułatwiające zachowanie
+                        dystansu między klientami w kolejkach</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="main-content" class="card bg-light">
+
+    <div class="card-header text-center">
+        <h2>Zarezerwowane seanse</h2>
+    </div>
+
+    <div class="card-body">
+        <table class="table text-center">
+            <thead>
+            <tr>
+                <th scope="col">Nazwa seansu</th>
+                <th scope="col">Sala</th>
+                <th scope="col">Data</th>
+                <th scope="col">Godzina</th>
+                <th scope="col">Status</th>
+                <th scope="col">Ilość biletów normalnych</th>
+                <th scope="col">Ilość biletów ulgowych</th>
+                <th scope="col">Cena</th>
+              <!--  <th scope="col">QR</th>-->
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:block th:each="reservation, iterator: ${reservations}">
+                <td th:text="${reservation.screening.movie.title}" value="title"></td>
+                <td th:text="${reservation.screening.auditorium.name}" value="auditorium"></td>
+                <td th:text="${reservation.screening.screeningDate}" value="screeningDate"></td>
+                <td th:text="${reservation.screening.screeningTime}" value="screeningTime"></td>
+                <th:block th:switch="${reservation.payment.isPaid}">
+                    <td th:case="true" value="paid">Opłacono</td>
+                    <td th:case="false" value="paid">
+                        Nieopłacono
+                        <br>
+                        <form action='#' th:action="@{/charge}" method='POST' id='checkout-form'>
+                            <input type='hidden' th:value='${#strings.substring(reservation.payment.amount, 0, #strings.length(reservation.payment.amount)-2)} * 100' name='amount' />
+                            <input type='hidden' th:value='${reservation.id}' name='reservationId' />
+                            <script src='https://checkout.stripe.com/checkout.js' class='stripe-button'
+                                    data-key="pk_test_51IxqCJKaN3f0hB4JonfDTJhXlDTbkUaTPc1q2WNXLSuyr0jX3gnaEomZpaCNw0JMUKI4RGcDHjc3ARRKFtxTMNxa00d9FaUFGm"
+                                    data-amount="${#strings.substring(reservation.payment.amount, 0, #strings.length(reservation.payment.amount)-2)} * 100"
+                                    data-currency="PLN"
+                                    data-label='Zapłać kartą'
+                                    data-name='Płatność'
+                                    data-description='Dokonaj płatności za rezerwację'
+                                    data-locale='auto'
+                                    data-zip-code='false'>
+                            </script>
+                        </form>
+                    </td>
+                </th:block>
+                <td th:text="${fullFareList.get(iterator.index)}"></td>
+                <td th:text="${reducedFareList.get(iterator.index)}"></td>
+                <td th:text="${reservation.payment.amount}"></td>
+             <!--   <td>
+                    <form th:action="@{/user-tickets}" th:object="${ticketsQr}" method="POST">
+                    <input type="submit" value="QR"/>
+
+                </form></td>-->
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<footer class="text-center text-lg-start bg-dark text-white p-3">
+    CIINEMA &copy; 2021
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

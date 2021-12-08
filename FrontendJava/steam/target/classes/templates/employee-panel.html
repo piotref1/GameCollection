@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Panel pracownika</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{fragments/nav-bar-authorized:: nav-bar}">Nav bar</div>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <div th:replace="~{fragments/nav-bar :: nav-bar}">Nav bar</div>
+    </div>
+</header>
+
+<section id="main-content" class="card bg-light">
+
+    <div class="card-header text-center">
+        <h2>Panel pracownika</h2>
+    </div>
+
+    <div class="card-body text-center">
+
+        <div class="row my-3">
+
+            <div class="col-sm-6">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Sprzedaż biletów stacjonarna</h5>
+                        <form method="post" action="#" th:action="@{/sellTickets}" th:object="${newReservation}">
+                            <input type="hidden" id="costInput" th:field="*{payment.amount}"/>
+                            <div class="form-group">
+                                <label for="screening">Seans</label>
+                                <select class="form-control" id="screening" name="screeningIdInput">
+                                    <option th:each="screening : ${screenings}" th:text="${screening.movie.title + ' ' + screening.screeningDate + ' ' + screening.screeningTime}" th:value="${screening.id}"/>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fullFareInput">Ilość biletów normalnych</label>
+                                <input type="number" class="product-buying-price form-control" id="fullFareInput" name="fullFareInput" min="0" max="5" value="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reducedFareInput">Ilość biletów ulgowych</label>
+                                <input type="number" class="product-selling-price form-control" id="reducedFareInput" name="reducedFareInput" min="0" max="5" value="0" required>
+                            </div>
+                            <div>
+                                Łączne koszty:
+                                <div class="net-profit"></div>
+                            </div>
+                            <button class="btn btn-success">Zatwierdź</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Sprzedaż przekąsek</h5>
+                        <form method="post" action="#" th:action="@{/sellSnacks}" th:object="${newSnack}">
+                            <div class="form-group">
+                                <label for="screening">Przekąska</label>
+                                <select class="form-control" th:field="*{snacksType.id}">
+                                    <option th:each="snackType : ${snackTypes}" th:text="${snackType.name}" th:value="${snackType.id}"/>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="snacksAmount">Ilość</label>
+                                <input type="number" class="form-control" id="snacksAmount" th:field="*{amount}" min="1" value="1" required>
+                            </div>
+                            <button class="btn btn-success">Zatwierdź</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</section>
+
+</body>
+
+<footer class="text-center text-lg-start bg-dark text-white p-3">
+    CIINEMA &copy; 2021
+</footer>
+
+<script>
+    $('.product-buying-price, .product-selling-price').on('blur', function(e) {
+        var buying_pr = $('.product-buying-price'),
+            selling_pr = $('.product-selling-price'),
+            net_profit = $('.net-profit');
+        buy_pr = parseFloat(buying_pr.val() * 15);
+        sell_pr = parseFloat(selling_pr.val() * 10);
+        if (!isNaN(buy_pr) && !isNaN(sell_pr)) {
+            net_profit.text((sell_pr + buy_pr).toFixed(2));
+            document.getElementById('costInput').value = (sell_pr + buy_pr) * 100;
+        }
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
