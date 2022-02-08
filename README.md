@@ -1,2 +1,20 @@
 # GameCollection
 Modules of inventory system created around the need of game collectors.
+
+Fixes required:
+-Change all SQL inserts to do batch inserts rather than single inserts. Some are done this way at the moment due to issues while coding in batch ones.
+-Fix frontend. Or better yet scrape what is there now and create new one. With paging. One that also would show only available modules.
+-Figure out better email sending. 
+-Check how many requests can be done to Steam servers before being blocked. Would allow to speed up the code, running processes in parallel rather than sequentiall for all users.
+
+Current modules:
+-Steam - Scraping data from Steam website to get list of games, genres, achievements and time spent in games.
+In addition it creates lists of suggestion for games to buy, finish, play and sends emails if user spent too much time in games (depending on set amount of hours)
+
+Future modules:
+-Nintendo module - No scraping is available. Crud module for adding games manually thorough all generations of Nintendo consoles. In addition ability to add
+hardware like consoles, controllers to list of collected items.
+-Xbox - As above.
+-Sony - Some scraping is available. Due to discrepancies between given data and real world it would include field "Owned" as Sony saves what was played rather than owned.
+Some games would need to be manually adjusted in regards to that or manually added to the list.
+-Origin/Uplay/etc - Needs research if there's any publicly available API or data source.
