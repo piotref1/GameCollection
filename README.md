@@ -18,6 +18,8 @@ In addition it creates lists of suggestion for games to buy, finish, play and se
 
 Future modules:
 
+-User module - Login/Registration. Can it be done without need for logging in? Yes. But no way of changing your data by yourself so it's a must.
+
 -Nintendo module - No scraping is available. Crud module for adding games manually thorough all generations of Nintendo consoles. In addition ability to add
 hardware like consoles, controllers to list of collected items.
 
