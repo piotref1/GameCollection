@@ -1,3 +1,7 @@
+create database game_library;
+use game_library;
+
+
 drop table user_steam_games;
 drop table user_steam_recommended_games_buy;
 drop table user_steam_recommended_games_play;
