@@ -1,0 +1,108 @@
+CREATE TABLE `distribution` (
+  `id` int NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `ecosystems` (
+  `id` int NOT NULL,
+  `name` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `games` (
+  `id` int NOT NULL,
+  `title_id` int NOT NULL,
+  `platform_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `platform_id` (`platform_id`),
+  KEY `games_ibfk_2_idx` (`title_id`),
+  CONSTRAINT `games_ibfk_1` FOREIGN KEY (`platform_id`) REFERENCES `platforms` (`id`),
+  CONSTRAINT `games_ibfk_2` FOREIGN KEY (`title_id`) REFERENCES `titles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `genres` (
+  `id` int NOT NULL,
+  `name` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `platforms` (
+  `id` int NOT NULL,
+  `ecosystem_id` int NOT NULL,
+  `name` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ecosystem_id` (`ecosystem_id`),
+  CONSTRAINT `platforms_ibfk_1` FOREIGN KEY (`ecosystem_id`) REFERENCES `ecosystems` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `steam_games` (
+  `appid` int NOT NULL,
+  `game_id` int NOT NULL,
+  `has_achievements` tinyint(1) NOT NULL,
+  PRIMARY KEY (`appid`),
+  KEY `game_id_idx` (`game_id`),
+  CONSTRAINT `game_id` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `titles` (
+  `id` int NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `genre_id` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `genre_id` (`genre_id`),
+  CONSTRAINT `titles_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user_games` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `game_id` int NOT NULL,
+  `time_played` varchar(20) DEFAULT NULL,
+  `distribution_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `game_id` (`game_id`),
+  KEY `user_games_ibfk_3_idx` (`distribution_id`),
+  CONSTRAINT `user_games_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_games_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`),
+  CONSTRAINT `user_games_ibfk_3` FOREIGN KEY (`distribution_id`) REFERENCES `distribution` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user_steam_games` (
+  `id` varchar(100) NOT NULL,
+  `user_id` int NOT NULL,
+  `appid` int NOT NULL,
+  `time_played` varchar(20) DEFAULT NULL,
+  `achievements` varchar(10) DEFAULT 'N/A',
+  `achievements_percentage` varchar(4) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `game_id` (`appid`),
+  CONSTRAINT `user_steam_games_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_steam_games_ibfk_2` FOREIGN KEY (`appid`) REFERENCES `steam_games` (`appid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user_steam_recommended_games` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `game_id` int NOT NULL,
+  `type` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `game_id` (`game_id`),
+  CONSTRAINT `user_steam_recommended_games_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_steam_recommended_games_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `steam_games` (`appid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(100) NOT NULL,
+  `profile_link` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `hours_played_limit` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nickname` (`nickname`),
+  UNIQUE KEY `profile_link` (`profile_link`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
